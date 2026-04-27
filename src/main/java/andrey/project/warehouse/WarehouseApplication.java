@@ -4,6 +4,8 @@ import andrey.project.warehouse.entity.Product;
 import andrey.project.warehouse.repository.ProductRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import andrey.project.warehouse.service.ProductService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,19 +19,9 @@ public class WarehouseApplication {
 	}
 
 	@Bean
-	CommandLineRunner seedProduct(ProductRepository repository) {
+	CommandLineRunner seedProduct(ProductService productService) {
 		return args -> {
-			Product product = new Product();
-			product.setName("Test product");
-			product.setArticle("ART-001");
-			product.setDescription("Product created automatically on application startup");
-			product.setPrice(new BigDecimal("199.99"));
-			product.setQuantity(25);
-			product.setUnit("pcs");
-			product.setCreatedAt(LocalDateTime.now());
-			product.setUpdatedAt(LocalDateTime.now());
-
-			repository.saveAndFlush(product);
+			productService.addEntity("Стул","ыы", "описание", new BigDecimal(1000),10, "SDSS", LocalDateTime.now(), LocalDateTime.now() );
 		};
 	}
 

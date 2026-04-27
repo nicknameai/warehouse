@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+//JPA
 @Entity
 public class Product {
 
@@ -42,9 +43,8 @@ public class Product {
     public Product() {
     }
 
-    public Product(Long id, String name, String article, String description, BigDecimal price, Integer quantity,
+    public Product(String name, String article, String description, BigDecimal price, Integer quantity,
                    String unit, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
         this.name = name;
         this.article = article;
         this.description = description;
@@ -57,10 +57,6 @@ public class Product {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
