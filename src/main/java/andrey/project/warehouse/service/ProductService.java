@@ -1,6 +1,7 @@
 package andrey.project.warehouse.service;
 
 import andrey.project.warehouse.entity.Product;
+import andrey.project.warehouse.exception.ValidationException;
 import andrey.project.warehouse.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ public class ProductService {
 
     public Product addEntity(String name, String article, String description, BigDecimal price,
                              Integer quantity, String unit, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        validateProduct(name, article, price, quantity);
 
         Product product = new Product();
         product.setName(name);
@@ -44,4 +46,24 @@ public class ProductService {
     public void removeEntity(Long id) {
         this.productRepository.deleteById(id);
     }
+
+
+    private void validateProduct(String name, String article, BigDecimal price, Integer quantity) {
+        if (name == null || name.isBlank()) {
+            throw new ValidationException("Product name must not be empty");
+        }
+
+        if (article == null || article.isBlank()) {
+            throw new ValidationException("Product article must not be empty");
+        }
+
+        if (price == null || price.compareTo(BigDecimal.ZERO) < 0) {
+            throw new ValidationException("Product price must be greater than or equal to 0");
+        }
+
+        if (quantity == null || quantity < 0) {
+            throw new ValidationException("Product quantity must be greater than or equal to 0");
+        }
+    }
+
 }
