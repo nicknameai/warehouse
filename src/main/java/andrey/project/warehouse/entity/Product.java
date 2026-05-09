@@ -5,58 +5,39 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
-//JPA
+import jakarta.persistence.Table;
 @Entity
+@Table(name = "products")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    @Column(name = "name", length = 255)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "article", length = 100)
+    @Column(name = "article", nullable = false, unique = true)
     private String article;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "price", precision = 10, scale = 2)
-    private BigDecimal price;
+    @Column(name = "purchase_price", nullable = false)
+    private Integer purchasePrice;
 
-    @Column(name = "quantity")
-    private Integer quantity;
+    @Column(name = "sale_price", nullable = false)
+    private Integer salePrice;
 
-    @Column(name = "unit", length = 50)
+    @Column(name = "unit", nullable = false)
     private String unit;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    public Product() {
-    }
-
-    public Product(String name, String article, String description, BigDecimal price, Integer quantity,
-                   String unit, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.name = name;
-        this.article = article;
-        this.description = description;
-        this.price = price;
-        this.quantity = quantity;
-        this.unit = unit;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
-    public Long getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -83,20 +64,20 @@ public class Product {
         this.description = description;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public Integer getPurchasePrice() {
+        return purchasePrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setPurchasePrice(Integer purchasePrice) {
+        this.purchasePrice = purchasePrice;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public Integer getSalePrice() {
+        return salePrice;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setSalePrice(Integer salePrice) {
+        this.salePrice = salePrice;
     }
 
     public String getUnit() {
@@ -107,19 +88,16 @@ public class Product {
         this.unit = unit;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", article='" + article + '\'' +
+                ", description='" + description + '\'' +
+                ", purchasePrice=" + purchasePrice +
+                ", salePrice=" + salePrice +
+                ", unit='" + unit + '\'' +
+                '}';
     }
 }

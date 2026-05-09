@@ -1,32 +1,40 @@
 package andrey.project.warehouse.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "suppliers")
 public class Supplier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    @Column(name = "phone", nullable = false)
     private String phone;
 
+    @Column(name = "email", nullable = false)
     private String email;
 
+    @Column(name = "address", nullable = false)
     private String address;
 
+    @Column(name = "description", nullable = false)
     private String description;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -68,5 +76,17 @@ public class Supplier {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Supplier{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

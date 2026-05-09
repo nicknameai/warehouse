@@ -3,10 +3,7 @@ package andrey.project.warehouse.console;
 import andrey.project.warehouse.entity.Product;
 import andrey.project.warehouse.exception.ValidationException;
 import andrey.project.warehouse.service.ProductService;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Scanner;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,53 +26,57 @@ public class ProductConsoleController {
             System.out.print("Enter description: ");
             String description = scanner.nextLine().trim();
 
-            System.out.print("Enter price: ");
-            BigDecimal price = readBigDecimal(scanner);
+            System.out.print("Enter purchase price: ");
+            Integer purchasePrice = readInteger(scanner);
 
-            System.out.print("Enter quantity: ");
-            Integer quantity = readInteger(scanner);
+            System.out.print("Enter sale price: ");
+            Integer salePrice = readInteger(scanner);
 
             System.out.print("Enter unit: ");
             String unit = scanner.nextLine().trim();
 
-            LocalDateTime now = LocalDateTime.now();
             Product product = productService.addEntity(
                     name,
                     article,
                     description,
-                    price,
-                    quantity,
-                    unit,
-                    now,
-                    now
+                    purchasePrice,
+                    salePrice,
+                    unit
             );
 
-            System.out.println("Product saved with id: " + product.getId());
+            System.out.println(product);
         } catch (ValidationException | IllegalArgumentException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
     }
 
-    public void handleRemoveProduct(Scanner scanner) {
+    public void handleFindProductById(Scanner scanner) {
         try {
-            System.out.print("Enter product id to remove: ");
-            Long id = readLong(scanner);
-            productService.removeEntity(id);
-            System.out.println("Product removed.");
-        } catch (EmptyResultDataAccessException ex) {
-            System.out.println("Error: product with this id was not found.");
+            System.out.print("Enter product id: ");
+            Integer id = readInteger(scanner);
+            System.out.println(productService.findById(id));
         } catch (IllegalArgumentException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
     }
 
-    private BigDecimal readBigDecimal(Scanner scanner) {
-        String value = scanner.nextLine().trim();
-
+    public void handleFindProductByName(Scanner scanner) {
         try {
-            return new BigDecimal(value);
-        } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Price must be a valid number.");
+            System.out.print("Enter product name: ");
+            String name = scanner.nextLine().trim();
+            System.out.println(productService.findByName(name));
+        } catch (ValidationException | IllegalArgumentException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+    }
+
+    public void handleFindProductByArticle(Scanner scanner) {
+        try {
+            System.out.print("Enter product article: ");
+            String article = scanner.nextLine().trim();
+            System.out.println(productService.findByArticle(article));
+        } catch (ValidationException | IllegalArgumentException ex) {
+            System.out.println("Error: " + ex.getMessage());
         }
     }
 
@@ -84,16 +85,6 @@ public class ProductConsoleController {
 
         try {
             return Integer.valueOf(value);
-        } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Quantity must be a valid integer.");
-        }
-    }
-
-    private Long readLong(Scanner scanner) {
-        String value = scanner.nextLine().trim();
-
-        try {
-            return Long.valueOf(value);
         } catch (NumberFormatException ex) {
             throw new IllegalArgumentException("Id must be a valid number.");
         }
