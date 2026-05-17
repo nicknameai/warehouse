@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head(${pageTitle})}"></head>
+<body>
+<div th:replace="~{fragments :: shell(${activePage}, ${pageTitle})}"></div>
+
+<main class="content content--overlay">
+    <div class="stack stack--two-columns">
+        <section class="card">
+            <div class="card__header">
+                <div>
+                    <h3>Добавить товар</h3>
+                    <p>Форма повторяет текущие поля из проекта.</p>
+                </div>
+            </div>
+
+            <div class="alert alert--success" th:if="${successMessage}" th:text="${successMessage}"></div>
+            <div class="alert alert--error" th:if="${formError}" th:text="${formError}"></div>
+
+            <form class="form-grid" method="post" th:action="@{/products}" th:object="${productForm}">
+                <label>
+                    Название
+                    <input type="text" th:field="*{name}">
+                </label>
+                <label>
+                    Артикул
+                    <input type="text" th:field="*{article}">
+                </label>
+                <label class="form-grid__full">
+                    Описание
+                    <textarea rows="4" th:field="*{description}"></textarea>
+                </label>
+                <label>
+                    Закупочная цена
+                    <input type="number" min="0" th:field="*{purchasePrice}">
+                </label>
+                <label>
+                    Цена продажи
+                    <input type="number" min="0" th:field="*{salePrice}">
+                </label>
+                <label>
+                    Единица измерения
+                    <input type="text" th:field="*{unit}">
+                </label>
+                <div class="form-actions form-grid__full">
+                    <button class="btn btn--primary" type="submit">Сохранить товар</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="card">
+            <div class="card__header">
+                <div>
+                    <h3>Поиск товара</h3>
+                    <p>Сохранены все три варианта поиска из CLI.</p>
+                </div>
+            </div>
+
+            <div class="search-grid">
+                <form class="inline-form" method="get" th:action="@{/products}">
+                    <label>
+                        Поиск по ID
+                        <input type="number" name="id" min="1" th:value="${searchId}">
+                    </label>
+                    <button class="btn" type="submit">Найти</button>
+                </form>
+
+                <form class="inline-form" method="get" th:action="@{/products}">
+                    <label>
+                        Поиск по названию
+                        <input type="text" name="name" th:value="${searchName}">
+                    </label>
+                    <button class="btn" type="submit">Найти</button>
+                </form>
+
+                <form class="inline-form" method="get" th:action="@{/products}">
+                    <label>
+                        Поиск по артикулу
+                        <input type="text" name="article" th:value="${searchArticle}">
+                    </label>
+                    <button class="btn" type="submit">Найти</button>
+                </form>
+            </div>
+
+            <div class="alert alert--error" th:if="${searchError}" th:text="${searchError}"></div>
+
+            <div class="result-card" th:if="${searchResult}">
+                <h4 th:text="${searchLabel}"></h4>
+                <dl class="detail-grid">
+                    <div><dt>ID</dt><dd th:text="${searchResult.id}"></dd></div>
+                    <div><dt>Название</dt><dd th:text="${searchResult.name}"></dd></div>
+                    <div><dt>Артикул</dt><dd th:text="${searchResult.article}"></dd></div>
+                    <div><dt>Описание</dt><dd th:text="${searchResult.description}"></dd></div>
+                    <div><dt>Закупочная цена</dt><dd th:text="${searchResult.purchasePrice}"></dd></div>
+                    <div><dt>Цена продажи</dt><dd th:text="${searchResult.salePrice}"></dd></div>
+                    <div><dt>Единица</dt><dd th:text="${searchResult.unit}"></dd></div>
+                </dl>
+            </div>
+        </section>
+
+        <section class="card card--full">
+            <div class="card__header">
+                <div>
+                    <h3>Таблица товаров</h3>
+                    <p>Все товары из базы в одном месте.</p>
+                </div>
+                <div class="card__actions">
+                    <span class="badge" th:text="'Товаров: ' + ${#lists.size(products)}"></span>
+                    <a class="btn" th:href="@{/products}">Обновить</a>
+                </div>
+            </div>
+
+            <div class="empty-state" th:if="${#lists.isEmpty(products)}">
+                Товаров пока нет.
+            </div>
+
+            <div class="table-wrap" th:if="${not #lists.isEmpty(products)}">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Артикул</th>
+                        <th>Описание</th>
+                        <th>Закупочная цена</th>
+                        <th>Цена продажи</th>
+                        <th>Единица</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="product : ${products}">
+                        <td th:text="${product.id}"></td>
+                        <td th:text="${product.name}"></td>
+                        <td th:text="${product.article}"></td>
+                        <td th:text="${product.description}"></td>
+                        <td th:text="${product.purchasePrice}"></td>
+                        <td th:text="${product.salePrice}"></td>
+                        <td th:text="${product.unit}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</main>
+</body>
+</html>

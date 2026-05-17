@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head(${pageTitle})}"></head>
+<body>
+<div th:replace="~{fragments :: shell(${activePage}, ${pageTitle})}"></div>
+
+<main class="content content--overlay">
+    <div class="stack">
+        <section class="tabs">
+            <a th:href="@{/partners(tab='suppliers')}" th:classappend="${activeTab == 'suppliers'} ? ' is-active'">Поставщики</a>
+            <a th:href="@{/partners(tab='clients')}" th:classappend="${activeTab == 'clients'} ? ' is-active'">Клиенты</a>
+        </section>
+
+        <section class="stack stack--two-columns" th:if="${activeTab == 'suppliers'}">
+            <section class="card">
+                <div class="card__header">
+                    <div>
+                        <h3>Добавить поставщика</h3>
+                        <p>Все поля соответствуют текущей модели данных.</p>
+                    </div>
+                </div>
+
+                <div class="alert alert--success" th:if="${supplierSuccessMessage}" th:text="${supplierSuccessMessage}"></div>
+                <div class="alert alert--error" th:if="${supplierFormError}" th:text="${supplierFormError}"></div>
+
+                <form class="form-grid" method="post" th:action="@{/partners/suppliers(tab='suppliers')}" th:object="${supplierForm}">
+                    <label><span>Название</span><input type="text" th:field="*{name}"></label>
+                    <label><span>Телефон</span><input type="text" th:field="*{phone}"></label>
+                    <label><span>Email</span><input type="email" th:field="*{email}"></label>
+                    <label><span>Адрес</span><input type="text" th:field="*{address}"></label>
+                    <label class="form-grid__full"><span>Описание</span><textarea rows="4" th:field="*{description}"></textarea></label>
+                    <div class="form-actions form-grid__full">
+                        <button class="btn btn--primary" type="submit">Сохранить поставщика</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="card">
+                <div class="card__header">
+                    <div>
+                        <h3>Поиск поставщика</h3>
+                        <p>Можно искать по ID и названию.</p>
+                    </div>
+                </div>
+
+                <div class="search-grid">
+                    <form class="inline-form" method="get" th:action="@{/partners}">
+                        <input type="hidden" name="tab" value="suppliers">
+                        <label><span>Поиск по ID</span><input type="number" name="supplierId" min="1" th:value="${supplierSearchId}"></label>
+                        <button class="btn" type="submit">Найти</button>
+                    </form>
+
+                    <form class="inline-form" method="get" th:action="@{/partners}">
+                        <input type="hidden" name="tab" value="suppliers">
+                        <label><span>Поиск по названию</span><input type="text" name="supplierName" th:value="${supplierSearchName}"></label>
+                        <button class="btn" type="submit">Найти</button>
+                    </form>
+                </div>
+
+                <div class="alert alert--error" th:if="${supplierSearchError}" th:text="${supplierSearchError}"></div>
+
+                <div class="result-card" th:if="${supplierSearchResult}">
+                    <h4>Найденный поставщик</h4>
+                    <dl class="detail-grid">
+                        <div><dt>ID</dt><dd th:text="${supplierSearchResult.id}"></dd></div>
+                        <div><dt>Название</dt><dd th:text="${supplierSearchResult.name}"></dd></div>
+                        <div><dt>Телефон</dt><dd th:text="${supplierSearchResult.phone}"></dd></div>
+                        <div><dt>Email</dt><dd th:text="${supplierSearchResult.email}"></dd></div>
+                        <div><dt>Адрес</dt><dd th:text="${supplierSearchResult.address}"></dd></div>
+                        <div><dt>Описание</dt><dd th:text="${supplierSearchResult.description}"></dd></div>
+                    </dl>
+                </div>
+            </section>
+
+            <section class="card card--full">
+                <div class="card__header">
+                    <div>
+                        <h3>Таблица поставщиков</h3>
+                        <p>Все поставщики из базы.</p>
+                    </div>
+                    <div class="card__actions">
+                        <span class="badge" th:text="'Поставщиков: ' + ${#lists.size(suppliers)}"></span>
+                        <a class="btn" th:href="@{/partners(tab='suppliers')}">Обновить</a>
+                    </div>
+                </div>
+
+                <div class="empty-state" th:if="${#lists.isEmpty(suppliers)}">Поставщиков пока нет.</div>
+
+                <div class="table-wrap" th:if="${not #lists.isEmpty(suppliers)}">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Название</th>
+                            <th>Телефон</th>
+                            <th>Email</th>
+                            <th>Адрес</th>
+                            <th>Описание</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="supplier : ${suppliers}">
+                            <td th:text="${supplier.id}"></td>
+                            <td th:text="${supplier.name}"></td>
+                            <td th:text="${supplier.phone}"></td>
+                            <td th:text="${supplier.email}"></td>
+                            <td th:text="${supplier.address}"></td>
+                            <td th:text="${supplier.description}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+
+        <section class="stack stack--two-columns" th:if="${activeTab == 'clients'}">
+            <section class="card">
+                <div class="card__header">
+                    <div>
+                        <h3>Добавить клиента</h3>
+                        <p>Отдельная вкладка для клиентской базы.</p>
+                    </div>
+                </div>
+
+                <div class="alert alert--success" th:if="${clientSuccessMessage}" th:text="${clientSuccessMessage}"></div>
+                <div class="alert alert--error" th:if="${clientFormError}" th:text="${clientFormError}"></div>
+
+                <form class="form-grid" method="post" th:action="@{/partners/clients(tab='clients')}" th:object="${clientForm}">
+                    <label><span>Название</span><input type="text" th:field="*{name}"></label>
+                    <label><span>Телефон</span><input type="text" th:field="*{phone}"></label>
+                    <label><span>Email</span><input type="email" th:field="*{email}"></label>
+                    <label><span>Адрес</span><input type="text" th:field="*{address}"></label>
+                    <label class="form-grid__full"><span>Описание</span><textarea rows="4" th:field="*{description}"></textarea></label>
+                    <div class="form-actions form-grid__full">
+                        <button class="btn btn--primary" type="submit">Сохранить клиента</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="card">
+                <div class="card__header">
+                    <div>
+                        <h3>Поиск клиента</h3>
+                        <p>Поиск по ID и названию сохранен.</p>
+                    </div>
+                </div>
+
+                <div class="search-grid">
+                    <form class="inline-form" method="get" th:action="@{/partners}">
+                        <input type="hidden" name="tab" value="clients">
+                        <label><span>Поиск по ID</span><input type="number" name="clientId" min="1" th:value="${clientSearchId}"></label>
+                        <button class="btn" type="submit">Найти</button>
+                    </form>
+
+                    <form class="inline-form" method="get" th:action="@{/partners}">
+                        <input type="hidden" name="tab" value="clients">
+                        <label><span>Поиск по названию</span><input type="text" name="clientName" th:value="${clientSearchName}"></label>
+                        <button class="btn" type="submit">Найти</button>
+                    </form>
+                </div>
+
+                <div class="alert alert--error" th:if="${clientSearchError}" th:text="${clientSearchError}"></div>
+
+                <div class="result-card" th:if="${clientSearchResult}">
+                    <h4>Найденный клиент</h4>
+                    <dl class="detail-grid">
+                        <div><dt>ID</dt><dd th:text="${clientSearchResult.id}"></dd></div>
+                        <div><dt>Название</dt><dd th:text="${clientSearchResult.name}"></dd></div>
+                        <div><dt>Телефон</dt><dd th:text="${clientSearchResult.phone}"></dd></div>
+                        <div><dt>Email</dt><dd th:text="${clientSearchResult.email}"></dd></div>
+                        <div><dt>Адрес</dt><dd th:text="${clientSearchResult.address}"></dd></div>
+                        <div><dt>Описание</dt><dd th:text="${clientSearchResult.description}"></dd></div>
+                    </dl>
+                </div>
+            </section>
+
+            <section class="card card--full">
+                <div class="card__header">
+                    <div>
+                        <h3>Таблица клиентов</h3>
+                        <p>Все клиенты из базы.</p>
+                    </div>
+                    <span class="badge" th:text="'Клиентов: ' + ${#lists.size(clients)}"></span>
+                </div>
+
+                <div class="empty-state" th:if="${#lists.isEmpty(clients)}">Клиентов пока нет.</div>
+
+                <div class="table-wrap" th:if="${not #lists.isEmpty(clients)}">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Название</th>
+                            <th>Телефон</th>
+                            <th>Email</th>
+                            <th>Адрес</th>
+                            <th>Описание</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="client : ${clients}">
+                            <td th:text="${client.id}"></td>
+                            <td th:text="${client.name}"></td>
+                            <td th:text="${client.phone}"></td>
+                            <td th:text="${client.email}"></td>
+                            <td th:text="${client.address}"></td>
+                            <td th:text="${client.description}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </div>
+</main>
+</body>
+</html>

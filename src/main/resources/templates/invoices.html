@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head(${pageTitle})}"></head>
+<body>
+<div th:replace="~{fragments :: shell(${activePage}, ${pageTitle})}"></div>
+
+<main class="content content--overlay">
+    <div class="stack stack--two-columns">
+        <section class="card">
+            <div class="card__header">
+                <div>
+                    <h3>Создать накладную</h3>
+                    <p>Одна форма для приходных и расходных накладных.</p>
+                </div>
+            </div>
+
+            <div class="alert alert--success" th:if="${invoiceSuccessMessage}" th:text="${invoiceSuccessMessage}"></div>
+            <div class="alert alert--error" th:if="${invoiceFormError}" th:text="${invoiceFormError}"></div>
+
+            <form class="form-grid" method="post" th:action="@{/invoices}" th:object="${invoiceForm}">
+                <label class="form-grid__full">
+                    Тип накладной
+                    <select th:field="*{invoiceType}" data-invoice-type>
+                        <option value="INCOMING">Приходная</option>
+                        <option value="OUTGOING">Расходная</option>
+                    </select>
+                </label>
+
+                <label class="form-grid__full" data-party-field="supplier">
+                    Поставщик
+                    <select th:field="*{supplierId}">
+                        <option value="">Выберите поставщика</option>
+                        <option th:each="supplier : ${suppliers}" th:value="${supplier.id}" th:text="${supplier.name}"></option>
+                    </select>
+                </label>
+
+                <label class="form-grid__full" data-party-field="client">
+                    Клиент
+                    <select th:field="*{clientId}">
+                        <option value="">Выберите клиента</option>
+                        <option th:each="client : ${clients}" th:value="${client.id}" th:text="${client.name}"></option>
+                    </select>
+                </label>
+
+                <label class="form-grid__full">
+                    Комментарий
+                    <textarea rows="3" th:field="*{comment}"></textarea>
+                </label>
+
+                <div class="form-grid__full">
+                    <div class="line-items-header">
+                        <h4>Позиции накладной</h4>
+                        <button class="btn" type="button" data-add-item>Добавить строку</button>
+                    </div>
+
+                    <div class="line-items" data-line-items>
+                        <div class="line-item" th:each="item, itemStat : *{items}">
+                            <label>
+                                Товар
+                                <select th:field="*{items[__${itemStat.index}__].productId}">
+                                    <option value="">Выберите товар</option>
+                                    <option th:each="product : ${products}" th:value="${product.id}" th:text="|${product.name} (${product.article})|"></option>
+                                </select>
+                            </label>
+                            <label>
+                                Количество
+                                <input type="number" min="1" th:field="*{items[__${itemStat.index}__].quantity}">
+                            </label>
+                            <label>
+                                Цена
+                                <input type="number" min="0" th:field="*{items[__${itemStat.index}__].price}">
+                            </label>
+                            <button class="btn btn--danger line-item__remove" type="button" data-remove-item>Удалить</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions form-grid__full">
+                    <button class="btn btn--primary" type="submit">Создать накладную</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="card">
+            <div class="card__header">
+                <div>
+                    <h3>Поиск накладной</h3>
+                    <p>Просмотр по ID вместе с позициями.</p>
+                </div>
+            </div>
+
+            <form class="inline-form" method="get" th:action="@{/invoices}">
+                <label>
+                    ID накладной
+                    <input type="number" min="1" name="invoiceId" th:value="${invoiceSearchId}">
+                </label>
+                <button class="btn" type="submit">Открыть</button>
+            </form>
+
+            <div class="alert alert--error" th:if="${invoiceSearchError}" th:text="${invoiceSearchError}"></div>
+
+            <div class="result-card" th:if="${invoiceDetails}">
+                <div class="result-card__header">
+                    <h4 th:text="'Накладная #' + ${invoiceDetails.id}"></h4>
+                    <span class="badge" th:text="${invoiceDetails.invoiceType == T(andrey.project.warehouse.entity.InvoiceType).INCOMING ? 'Приходная' : 'Расходная'}"></span>
+                </div>
+
+                <dl class="detail-grid">
+                    <div><dt>Дата</dt><dd th:text="${invoiceDetails.invoiceDate}"></dd></div>
+                    <div><dt>Тип</dt><dd th:text="${invoiceDetails.invoiceType}"></dd></div>
+                    <div><dt>Контрагент</dt><dd th:text="${invoicePartyName}"></dd></div>
+                    <div><dt>ID поставщика</dt><dd th:text="${invoiceDetails.supplierId != null ? invoiceDetails.supplierId : '—'}"></dd></div>
+                    <div><dt>ID клиента</dt><dd th:text="${invoiceDetails.clientId != null ? invoiceDetails.clientId : '—'}"></dd></div>
+                    <div><dt>Комментарий</dt><dd th:text="${invoiceDetails.comment != null and !#strings.isEmpty(invoiceDetails.comment) ? invoiceDetails.comment : '—'}"></dd></div>
+                </dl>
+
+                <div class="table-wrap table-wrap--compact">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID позиции</th>
+                            <th>ID товара</th>
+                            <th>Название</th>
+                            <th>Артикул</th>
+                            <th>Количество</th>
+                            <th>Цена</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item : ${invoiceDetails.items}">
+                            <td th:text="${item.id}"></td>
+                            <td th:text="${item.productId}"></td>
+                            <td th:text="${invoiceProductsById[item.productId].name}"></td>
+                            <td th:text="${invoiceProductsById[item.productId].article}"></td>
+                            <td th:text="${item.quantity}"></td>
+                            <td th:text="${item.price}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<script th:src="@{/js/invoices.js}"></script>
+</body>
+</html>

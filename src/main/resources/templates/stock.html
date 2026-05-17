@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head(${pageTitle})}"></head>
+<body>
+<div th:replace="~{fragments :: shell(${activePage}, ${pageTitle})}"></div>
+
+<main class="content content--overlay">
+    <div class="stack">
+        <section class="card">
+            <div class="card__header">
+                <div>
+                    <h3>Поиск остатка по ID товара</h3>
+                    <p>Быстрый просмотр позиции на складе.</p>
+                </div>
+            </div>
+
+            <form class="inline-form" method="get" th:action="@{/stock}">
+                <label>
+                    ID товара
+                    <input type="number" name="productId" min="1" th:value="${searchProductId}">
+                </label>
+                <button class="btn btn--primary" type="submit">Найти</button>
+            </form>
+
+            <div class="alert alert--error" th:if="${searchError}" th:text="${searchError}"></div>
+
+            <div class="result-card" th:if="${searchResult}">
+                <h4>Найденный остаток</h4>
+                <dl class="detail-grid">
+                    <div><dt>ID остатка</dt><dd th:text="${searchResult.id}"></dd></div>
+                    <div><dt>ID товара</dt><dd th:text="${searchResult.product.id}"></dd></div>
+                    <div><dt>Название</dt><dd th:text="${searchResult.product.name}"></dd></div>
+                    <div><dt>Артикул</dt><dd th:text="${searchResult.product.article}"></dd></div>
+                    <div><dt>Описание</dt><dd th:text="${searchResult.product.description}"></dd></div>
+                    <div><dt>Закупочная цена</dt><dd th:text="${searchResult.product.purchasePrice}"></dd></div>
+                    <div><dt>Цена продажи</dt><dd th:text="${searchResult.product.salePrice}"></dd></div>
+                    <div><dt>Единица</dt><dd th:text="${searchResult.product.unit}"></dd></div>
+                    <div><dt>Количество</dt><dd th:text="${searchResult.quantity}"></dd></div>
+                </dl>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card__header">
+                <div>
+                    <h3>Складская таблица</h3>
+                    <p>Показывает все данные по остаткам и связанным товарам.</p>
+                </div>
+                <div class="card__actions">
+                    <span class="badge" th:text="'Позиций: ' + ${#lists.size(stockItems)}"></span>
+                    <a class="btn" th:href="@{/stock}">Обновить</a>
+                </div>
+            </div>
+
+            <div class="empty-state" th:if="${#lists.isEmpty(stockItems)}">
+                Склад пока пуст.
+            </div>
+
+            <div class="table-wrap" th:if="${not #lists.isEmpty(stockItems)}">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID остатка</th>
+                        <th>ID товара</th>
+                        <th>Название</th>
+                        <th>Артикул</th>
+                        <th>Описание</th>
+                        <th>Закупочная цена</th>
+                        <th>Цена продажи</th>
+                        <th>Единица</th>
+                        <th>Количество</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${stockItems}">
+                        <td th:text="${item.id}"></td>
+                        <td th:text="${item.product.id}"></td>
+                        <td th:text="${item.product.name}"></td>
+                        <td th:text="${item.product.article}"></td>
+                        <td th:text="${item.product.description}"></td>
+                        <td th:text="${item.product.purchasePrice}"></td>
+                        <td th:text="${item.product.salePrice}"></td>
+                        <td th:text="${item.product.unit}"></td>
+                        <td th:text="${item.quantity}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</main>
+</body>
+</html>
