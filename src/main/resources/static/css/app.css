@@ -47,6 +47,23 @@ a {
     color: #fff;
 }
 
+.topbar__actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.topbar__user {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.logout-form {
+    margin: 0;
+}
+
 .brand {
     display: flex;
     align-items: center;
@@ -335,6 +352,18 @@ textarea {
     color: #b34d5b;
 }
 
+.btn--ghost-light {
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.26);
+    box-shadow: none;
+}
+
+.btn--ghost-light:hover {
+    background: rgba(255, 255, 255, 0.24);
+    box-shadow: none;
+}
+
 .form-actions {
     display: flex;
     justify-content: flex-start;
@@ -435,6 +464,46 @@ tbody tr:hover {
 .line-items {
     display: grid;
     gap: 12px;
+}
+
+.auth-page {
+    background:
+        radial-gradient(circle at top right, rgba(63, 170, 255, 0.18), transparent 28%),
+        linear-gradient(180deg, #1e7ec9 0 100%, #dfeffd 100%);
+}
+
+.auth-layout {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+}
+
+.auth-card {
+    width: min(100%, 520px);
+    padding: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 32px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: var(--shadow);
+}
+
+.auth-card__brand {
+    margin-bottom: 18px;
+}
+
+.auth-card__caption {
+    color: var(--muted);
+}
+
+.auth-card__title {
+    color: var(--text);
+}
+
+.auth-card__text {
+    margin: 0 0 20px;
+    color: var(--muted);
+    line-height: 1.6;
 }
 
 .line-item {

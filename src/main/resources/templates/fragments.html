@@ -14,28 +14,41 @@
 <div th:fragment="shell(activePage, pageTitle)">
     <header class="topbar">
         <div class="brand">
-            <div class="brand__logo">М</div>
+            <div class="brand__logo">W</div>
             <div>
-                <p class="brand__caption">Учет склада</p>
-                <h1 class="brand__title">Мебельный магазин</h1>
+                <p class="brand__caption">Warehouse accounting</p>
+                <h1 class="brand__title">Warehouse management</h1>
             </div>
+        </div>
+
+        <div class="topbar__actions" th:if="${currentUserName != null}">
+            <div class="topbar__user">
+                <span class="topbar__hint">Signed in as</span>
+                <strong th:text="${currentUserName}">user</strong>
+                <span class="topbar__hint" th:text="${currentUserRole}">ROLE</span>
+            </div>
+
+            <form class="logout-form" method="post" th:action="@{/logout}">
+                <button class="btn btn--ghost-light" type="submit">Logout</button>
+            </form>
         </div>
     </header>
 
     <div class="page-grid">
         <aside class="sidebar">
             <nav class="sidebar__nav">
-                <a th:href="@{/stock}" th:classappend="${activePage == 'stock'} ? ' is-active'">Склад</a>
-                <a th:href="@{/invoices}" th:classappend="${activePage == 'invoices'} ? ' is-active'">Накладные</a>
-                <a th:href="@{/partners}" th:classappend="${activePage == 'partners'} ? ' is-active'">Поставщики и клиенты</a>
-                <a th:href="@{/products}" th:classappend="${activePage == 'products'} ? ' is-active'">Товары</a>
+                <a th:href="@{/stock}" th:classappend="${activePage == 'stock'} ? ' is-active'">Stock</a>
+                <a th:href="@{/invoices}" th:classappend="${activePage == 'invoices'} ? ' is-active'">Invoices</a>
+                <a th:href="@{/partners}" th:classappend="${activePage == 'partners'} ? ' is-active'">Partners</a>
+                <a th:href="@{/products}" th:classappend="${activePage == 'products'} ? ' is-active'">Products</a>
+                <a th:if="${isAdmin}" th:href="@{/users}" th:classappend="${activePage == 'users'} ? ' is-active'">Users</a>
             </nav>
         </aside>
 
         <section class="content">
             <section class="hero">
                 <div>
-                    <h2 class="hero__title" th:text="${pageTitle}">Раздел</h2>
+                    <h2 class="hero__title" th:text="${pageTitle}">Section</h2>
                 </div>
             </section>
         </section>

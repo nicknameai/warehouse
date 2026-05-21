@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head(${pageTitle})}"></head>
+<body>
+<div th:replace="~{fragments :: shell(${activePage}, ${pageTitle})}"></div>
+
+<main class="content content--overlay">
+    <div class="stack stack--two-columns">
+        <section class="card">
+            <div class="card__header">
+                <div>
+                    <h3>Create user</h3>
+                    <p>Add a new warehouse user and assign a role from the database.</p>
+                </div>
+            </div>
+
+            <div class="alert alert--success" th:if="${successMessage}" th:text="${successMessage}"></div>
+            <div class="alert alert--error" th:if="${formError}" th:text="${formError}"></div>
+
+            <form class="form-grid" method="post" th:action="@{/users}" th:object="${userForm}">
+                <label>
+                    Login
+                    <input type="text" th:field="*{login}">
+                </label>
+                <label>
+                    Name
+                    <input type="text" th:field="*{name}">
+                </label>
+                <label>
+                    Password
+                    <input type="password" th:field="*{password}">
+                </label>
+                <label>
+                    Role
+                    <select th:field="*{roleName}">
+                        <option value="">Select role</option>
+                        <option th:each="role : ${roles}" th:value="${role.name}" th:text="${role.name}"></option>
+                    </select>
+                </label>
+                <div class="form-actions form-grid__full">
+                    <button class="btn btn--primary" type="submit">Create user</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="card card--full">
+            <div class="card__header">
+                <div>
+                    <h3>Users</h3>
+                    <p>Existing application users. Password hashes are never shown.</p>
+                </div>
+                <div class="card__actions">
+                    <span class="badge" th:text="'Users: ' + ${#lists.size(users)}"></span>
+                    <a class="btn" th:href="@{/users}">Refresh</a>
+                </div>
+            </div>
+
+            <div class="empty-state" th:if="${#lists.isEmpty(users)}">
+                No users found.
+            </div>
+
+            <div class="table-wrap" th:if="${not #lists.isEmpty(users)}">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Login</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.id}"></td>
+                        <td th:text="${user.login}"></td>
+                        <td th:text="${user.name}"></td>
+                        <td th:text="${user.role.name}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</main>
+</body>
+</html>
