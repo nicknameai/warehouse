@@ -31,16 +31,16 @@ public class SupplierService {
 
     public Supplier findById(Integer id) {
         return supplierRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Supplier with this id was not found."));
+                .orElseThrow(() -> new IllegalArgumentException("Поставщик с таким ID не найден."));
     }
 
     public Supplier findByName(String name) {
         if (name == null || name.isBlank()) {
-            throw new ValidationException("Supplier name must not be empty");
+            throw new ValidationException("Название поставщика не должно быть пустым.");
         }
 
         return supplierRepository.findByName(name)
-                .orElseThrow(() -> new IllegalArgumentException("Supplier with this name was not found."));
+                .orElseThrow(() -> new IllegalArgumentException("Поставщик с таким названием не найден."));
     }
 
     public List<Supplier> findAll() {
@@ -49,29 +49,29 @@ public class SupplierService {
 
     private void validateSupplier(String name, String phone, String email, String address, String description) {
         if (name == null || name.isBlank()) {
-            throw new ValidationException("Supplier name must not be empty");
+            throw new ValidationException("Название поставщика не должно быть пустым.");
         }
 
         if (phone == null || phone.isBlank()) {
-            throw new ValidationException("Supplier phone must not be empty");
+            throw new ValidationException("Телефон поставщика не должен быть пустым.");
         }
 
         if (email == null || email.isBlank()) {
-            throw new ValidationException("Supplier email must not be empty");
+            throw new ValidationException("Эл. почта поставщика не должна быть пустой.");
         }
 
         if (address == null || address.isBlank()) {
-            throw new ValidationException("Supplier address must not be empty");
+            throw new ValidationException("Адрес поставщика не должен быть пустым.");
         }
 
         if (description == null || description.isBlank()) {
-            throw new ValidationException("Supplier description must not be empty");
+            throw new ValidationException("Описание поставщика не должно быть пустым.");
         }
     }
 
     private void validateUniqueness(String name) {
         if (supplierRepository.existsByName(name)) {
-            throw new ValidationException("Supplier name must be unique");
+            throw new ValidationException("Название поставщика должно быть уникальным.");
         }
     }
 }

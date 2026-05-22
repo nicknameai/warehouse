@@ -31,16 +31,16 @@ public class ClientService {
 
     public Client findById(Integer id) {
         return clientRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Client with this id was not found."));
+                .orElseThrow(() -> new IllegalArgumentException("Клиент с таким ID не найден."));
     }
 
     public Client findByName(String name) {
         if (name == null || name.isBlank()) {
-            throw new ValidationException("Client name must not be empty");
+            throw new ValidationException("Название клиента не должно быть пустым.");
         }
 
         return clientRepository.findByName(name)
-                .orElseThrow(() -> new IllegalArgumentException("Client with this name was not found."));
+                .orElseThrow(() -> new IllegalArgumentException("Клиент с таким названием не найден."));
     }
 
     public List<Client> findAll() {
@@ -49,29 +49,29 @@ public class ClientService {
 
     private void validateClient(String name, String phone, String email, String address, String description) {
         if (name == null || name.isBlank()) {
-            throw new ValidationException("Client name must not be empty");
+            throw new ValidationException("Название клиента не должно быть пустым.");
         }
 
         if (phone == null || phone.isBlank()) {
-            throw new ValidationException("Client phone must not be empty");
+            throw new ValidationException("Телефон клиента не должен быть пустым.");
         }
 
         if (email == null || email.isBlank()) {
-            throw new ValidationException("Client email must not be empty");
+            throw new ValidationException("Эл. почта клиента не должна быть пустой.");
         }
 
         if (address == null || address.isBlank()) {
-            throw new ValidationException("Client address must not be empty");
+            throw new ValidationException("Адрес клиента не должен быть пустым.");
         }
 
         if (description == null || description.isBlank()) {
-            throw new ValidationException("Client description must not be empty");
+            throw new ValidationException("Описание клиента не должно быть пустым.");
         }
     }
 
     private void validateUniqueness(String name) {
         if (clientRepository.existsByName(name)) {
-            throw new ValidationException("Client name must be unique");
+            throw new ValidationException("Название клиента должно быть уникальным.");
         }
     }
 }

@@ -38,7 +38,7 @@ public class UserPageController {
                     form.getName(),
                     form.getRoleName()
             );
-            model.addAttribute("successMessage", "User created: " + user.getLogin());
+            model.addAttribute("successMessage", "Пользователь создан: " + user.getLogin());
             model.addAttribute("userForm", new UserCreateForm());
         } catch (ValidationException | IllegalArgumentException ex) {
             model.addAttribute("formError", ex.getMessage());
@@ -48,7 +48,7 @@ public class UserPageController {
     }
 
     private void preparePage(Model model, UserCreateForm form) {
-        model.addAttribute("pageTitle", "Users");
+        model.addAttribute("pageTitle", "Пользователи");
         model.addAttribute("activePage", "users");
         model.addAttribute("userForm", form);
         model.addAttribute("users", userManagementService.findAllUsers());

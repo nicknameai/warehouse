@@ -26,7 +26,7 @@
                 <form class="form-grid" method="post" th:action="@{/partners/suppliers(tab='suppliers')}" th:object="${supplierForm}">
                     <label><span>Название</span><input type="text" th:field="*{name}"></label>
                     <label><span>Телефон</span><input type="text" th:field="*{phone}"></label>
-                    <label><span>Email</span><input type="email" th:field="*{email}"></label>
+                    <label><span>Эл. почта</span><input type="email" th:field="*{email}"></label>
                     <label><span>Адрес</span><input type="text" th:field="*{address}"></label>
                     <label class="form-grid__full"><span>Описание</span><textarea rows="4" th:field="*{description}"></textarea></label>
                     <div class="form-actions form-grid__full">
@@ -65,7 +65,7 @@
                         <div><dt>ID</dt><dd th:text="${supplierSearchResult.id}"></dd></div>
                         <div><dt>Название</dt><dd th:text="${supplierSearchResult.name}"></dd></div>
                         <div><dt>Телефон</dt><dd th:text="${supplierSearchResult.phone}"></dd></div>
-                        <div><dt>Email</dt><dd th:text="${supplierSearchResult.email}"></dd></div>
+                        <div><dt>Эл. почта</dt><dd th:text="${supplierSearchResult.email}"></dd></div>
                         <div><dt>Адрес</dt><dd th:text="${supplierSearchResult.address}"></dd></div>
                         <div><dt>Описание</dt><dd th:text="${supplierSearchResult.description}"></dd></div>
                     </dl>
@@ -93,7 +93,7 @@
                             <th>ID</th>
                             <th>Название</th>
                             <th>Телефон</th>
-                            <th>Email</th>
+                            <th>Эл. почта</th>
                             <th>Адрес</th>
                             <th>Описание</th>
                         </tr>
@@ -128,7 +128,7 @@
                 <form class="form-grid" method="post" th:action="@{/partners/clients(tab='clients')}" th:object="${clientForm}">
                     <label><span>Название</span><input type="text" th:field="*{name}"></label>
                     <label><span>Телефон</span><input type="text" th:field="*{phone}"></label>
-                    <label><span>Email</span><input type="email" th:field="*{email}"></label>
+                    <label><span>Эл. почта</span><input type="email" th:field="*{email}"></label>
                     <label><span>Адрес</span><input type="text" th:field="*{address}"></label>
                     <label class="form-grid__full"><span>Описание</span><textarea rows="4" th:field="*{description}"></textarea></label>
                     <div class="form-actions form-grid__full">
@@ -167,7 +167,7 @@
                         <div><dt>ID</dt><dd th:text="${clientSearchResult.id}"></dd></div>
                         <div><dt>Название</dt><dd th:text="${clientSearchResult.name}"></dd></div>
                         <div><dt>Телефон</dt><dd th:text="${clientSearchResult.phone}"></dd></div>
-                        <div><dt>Email</dt><dd th:text="${clientSearchResult.email}"></dd></div>
+                        <div><dt>Эл. почта</dt><dd th:text="${clientSearchResult.email}"></dd></div>
                         <div><dt>Адрес</dt><dd th:text="${clientSearchResult.address}"></dd></div>
                         <div><dt>Описание</dt><dd th:text="${clientSearchResult.description}"></dd></div>
                     </dl>
@@ -192,7 +192,7 @@
                             <th>ID</th>
                             <th>Название</th>
                             <th>Телефон</th>
-                            <th>Email</th>
+                            <th>Эл. почта</th>
                             <th>Адрес</th>
                             <th>Описание</th>
                         </tr>

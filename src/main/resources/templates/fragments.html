@@ -4,7 +4,7 @@
 <head th:fragment="head(title)">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title} + ' | Warehouse'">Warehouse</title>
+    <title th:text="${title} + ' | Склад'">Склад</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,22 +14,22 @@
 <div th:fragment="shell(activePage, pageTitle)">
     <header class="topbar">
         <div class="brand">
-            <div class="brand__logo">W</div>
+            <div class="brand__logo">С</div>
             <div>
-                <p class="brand__caption">Warehouse accounting</p>
-                <h1 class="brand__title">Warehouse management</h1>
+                <p class="brand__caption">Складской учет</p>
+                <h1 class="brand__title">Управление складом</h1>
             </div>
         </div>
 
         <div class="topbar__actions" th:if="${currentUserName != null}">
             <div class="topbar__user">
-                <span class="topbar__hint">Signed in as</span>
-                <strong th:text="${currentUserName}">user</strong>
-                <span class="topbar__hint" th:text="${currentUserRole}">ROLE</span>
+                <span class="topbar__hint">Пользователь</span>
+                <strong th:text="${currentUserName}">пользователь</strong>
+                <span class="topbar__hint" th:text="${currentUserRole}">роль</span>
             </div>
 
             <form class="logout-form" method="post" th:action="@{/logout}">
-                <button class="btn btn--ghost-light" type="submit">Logout</button>
+                <button class="btn btn--ghost-light" type="submit">Выйти</button>
             </form>
         </div>
     </header>
@@ -37,18 +37,18 @@
     <div class="page-grid">
         <aside class="sidebar">
             <nav class="sidebar__nav">
-                <a th:href="@{/stock}" th:classappend="${activePage == 'stock'} ? ' is-active'">Stock</a>
-                <a th:href="@{/invoices}" th:classappend="${activePage == 'invoices'} ? ' is-active'">Invoices</a>
-                <a th:href="@{/partners}" th:classappend="${activePage == 'partners'} ? ' is-active'">Partners</a>
-                <a th:href="@{/products}" th:classappend="${activePage == 'products'} ? ' is-active'">Products</a>
-                <a th:if="${isAdmin}" th:href="@{/users}" th:classappend="${activePage == 'users'} ? ' is-active'">Users</a>
+                <a th:href="@{/stock}" th:classappend="${activePage == 'stock'} ? ' is-active'">Склад</a>
+                <a th:href="@{/invoices}" th:classappend="${activePage == 'invoices'} ? ' is-active'">Накладные</a>
+                <a th:href="@{/partners}" th:classappend="${activePage == 'partners'} ? ' is-active'">Контрагенты</a>
+                <a th:href="@{/products}" th:classappend="${activePage == 'products'} ? ' is-active'">Товары</a>
+                <a th:if="${isAdmin}" th:href="@{/users}" th:classappend="${activePage == 'users'} ? ' is-active'">Пользователи</a>
             </nav>
         </aside>
 
         <section class="content">
             <section class="hero">
                 <div>
-                    <h2 class="hero__title" th:text="${pageTitle}">Section</h2>
+                    <h2 class="hero__title" th:text="${pageTitle}">Раздел</h2>
                 </div>
             </section>
         </section>

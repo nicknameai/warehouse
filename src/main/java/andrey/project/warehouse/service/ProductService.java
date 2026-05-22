@@ -33,25 +33,25 @@ public class ProductService {
 
     public Product findById(Integer id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product with this id was not found."));
+                .orElseThrow(() -> new IllegalArgumentException("Товар с таким ID не найден."));
     }
 
     public Product findByName(String name) {
         if (name == null || name.isBlank()) {
-            throw new ValidationException("Product name must not be empty");
+            throw new ValidationException("Название товара не должно быть пустым.");
         }
 
         return productRepository.findByName(name)
-                .orElseThrow(() -> new IllegalArgumentException("Product with this name was not found."));
+                .orElseThrow(() -> new IllegalArgumentException("Товар с таким названием не найден."));
     }
 
     public Product findByArticle(String article) {
         if (article == null || article.isBlank()) {
-            throw new ValidationException("Product article must not be empty");
+            throw new ValidationException("Артикул товара не должен быть пустым.");
         }
 
         return productRepository.findByArticle(article)
-                .orElseThrow(() -> new IllegalArgumentException("Product with this article was not found."));
+                .orElseThrow(() -> new IllegalArgumentException("Товар с таким артикулом не найден."));
     }
 
     public List<Product> findAll() {
@@ -61,37 +61,37 @@ public class ProductService {
     private void validateProduct(String name, String article, String description, Integer purchasePrice,
                                  Integer salePrice, String unit) {
         if (name == null || name.isBlank()) {
-            throw new ValidationException("Product name must not be empty");
+            throw new ValidationException("Название товара не должно быть пустым.");
         }
 
         if (article == null || article.isBlank()) {
-            throw new ValidationException("Product article must not be empty");
+            throw new ValidationException("Артикул товара не должен быть пустым.");
         }
 
         if (description == null || description.isBlank()) {
-            throw new ValidationException("Product description must not be empty");
+            throw new ValidationException("Описание товара не должно быть пустым.");
         }
 
         if (purchasePrice == null || purchasePrice < 0) {
-            throw new ValidationException("Product purchase price must be greater than or equal to 0");
+            throw new ValidationException("Закупочная цена товара должна быть больше или равна 0.");
         }
 
         if (salePrice == null || salePrice < 0) {
-            throw new ValidationException("Product sale price must be greater than or equal to 0");
+            throw new ValidationException("Цена продажи товара должна быть больше или равна 0.");
         }
 
         if (unit == null || unit.isBlank()) {
-            throw new ValidationException("Product unit must not be empty");
+            throw new ValidationException("Единица измерения товара не должна быть пустой.");
         }
     }
 
     private void validateUniqueness(String name, String article) {
         if (productRepository.existsByName(name)) {
-            throw new ValidationException("Product name must be unique");
+            throw new ValidationException("Название товара должно быть уникальным.");
         }
 
         if (productRepository.existsByArticle(article)) {
-            throw new ValidationException("Product article must be unique");
+            throw new ValidationException("Артикул товара должен быть уникальным.");
         }
     }
 }

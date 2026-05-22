@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments :: head(${pageTitle})}"></head>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Пользователи')}"></head>
 <body>
-<div th:replace="~{fragments :: shell(${activePage}, ${pageTitle})}"></div>
+<div th:replace="~{fragments :: shell(${activePage}, 'Пользователи')}"></div>
 
 <main class="content content--overlay">
     <div class="stack stack--two-columns">
         <section class="card">
             <div class="card__header">
                 <div>
-                    <h3>Create user</h3>
-                    <p>Add a new warehouse user and assign a role from the database.</p>
+                    <h3>Создать пользователя</h3>
+                    <p>Добавьте нового пользователя склада и назначьте ему роль.</p>
                 </div>
             </div>
 
@@ -19,26 +19,26 @@
 
             <form class="form-grid" method="post" th:action="@{/users}" th:object="${userForm}">
                 <label>
-                    Login
+                    Логин
                     <input type="text" th:field="*{login}">
                 </label>
                 <label>
-                    Name
+                    Имя
                     <input type="text" th:field="*{name}">
                 </label>
                 <label>
-                    Password
+                    Пароль
                     <input type="password" th:field="*{password}">
                 </label>
                 <label>
-                    Role
+                    Роль
                     <select th:field="*{roleName}">
-                        <option value="">Select role</option>
+                        <option value="">Выберите роль</option>
                         <option th:each="role : ${roles}" th:value="${role.name}" th:text="${role.name}"></option>
                     </select>
                 </label>
                 <div class="form-actions form-grid__full">
-                    <button class="btn btn--primary" type="submit">Create user</button>
+                    <button class="btn btn--primary" type="submit">Создать пользователя</button>
                 </div>
             </form>
         </section>
@@ -46,17 +46,17 @@
         <section class="card card--full">
             <div class="card__header">
                 <div>
-                    <h3>Users</h3>
-                    <p>Existing application users. Password hashes are never shown.</p>
+                    <h3>Пользователи</h3>
+                    <p>Существующие пользователи приложения. Хеши паролей не отображаются.</p>
                 </div>
                 <div class="card__actions">
-                    <span class="badge" th:text="'Users: ' + ${#lists.size(users)}"></span>
-                    <a class="btn" th:href="@{/users}">Refresh</a>
+                    <span class="badge" th:text="'Пользователей: ' + ${#lists.size(users)}"></span>
+                    <a class="btn" th:href="@{/users}">Обновить</a>
                 </div>
             </div>
 
             <div class="empty-state" th:if="${#lists.isEmpty(users)}">
-                No users found.
+                Пользователи не найдены.
             </div>
 
             <div class="table-wrap" th:if="${not #lists.isEmpty(users)}">
@@ -64,9 +64,9 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Login</th>
-                        <th>Name</th>
-                        <th>Role</th>
+                        <th>Логин</th>
+                        <th>Имя</th>
+                        <th>Роль</th>
                     </tr>
                     </thead>
                     <tbody>

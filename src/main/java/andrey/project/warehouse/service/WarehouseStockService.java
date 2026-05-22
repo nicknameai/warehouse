@@ -17,11 +17,11 @@ public class WarehouseStockService {
 
     public WarehouseStock findByProductId(Integer productId) {
         if (productId == null || productId <= 0) {
-            throw new ValidationException("Product id must be a positive number.");
+            throw new ValidationException("ID товара должен быть положительным числом.");
         }
 
         return warehouseStockRepository.findByProductId(productId)
-                .orElseThrow(() -> new IllegalArgumentException("Warehouse stock for this product was not found."));
+                .orElseThrow(() -> new IllegalArgumentException("Остаток по этому товару не найден."));
     }
 
     public List<WarehouseStock> findAll() {

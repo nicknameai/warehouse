@@ -1,37 +1,37 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments :: head('Login')}"></head>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Вход')}"></head>
 <body class="auth-page">
 <main class="auth-layout">
     <section class="auth-card">
         <div class="brand auth-card__brand">
-            <div class="brand__logo">W</div>
+            <div class="brand__logo">С</div>
             <div>
-                <p class="brand__caption auth-card__caption">Warehouse accounting</p>
-                <h1 class="brand__title auth-card__title">Sign in</h1>
+                <p class="brand__caption auth-card__caption">Складской учет</p>
+                <h1 class="brand__title auth-card__title">Вход</h1>
             </div>
         </div>
 
-        <p class="auth-card__text">Use your login and password to access the warehouse application.</p>
+        <p class="auth-card__text">Введите логин и пароль, чтобы открыть систему складского учета.</p>
 
         <div class="alert alert--error" th:if="${param.error}">
-            Invalid login or password.
+            Неверный логин или пароль.
         </div>
         <div class="alert alert--success" th:if="${param.logout}">
-            You have been signed out.
+            Вы вышли из системы.
         </div>
 
         <form class="form-grid" method="post" th:action="@{/login}">
             <label class="form-grid__full">
-                Login
+                Логин
                 <input type="text" name="login" autocomplete="username">
             </label>
             <label class="form-grid__full">
-                Password
+                Пароль
                 <input type="password" name="password" autocomplete="current-password">
             </label>
             <div class="form-actions form-grid__full">
-                <button class="btn btn--primary" type="submit">Sign in</button>
+                <button class="btn btn--primary" type="submit">Войти</button>
             </div>
         </form>
     </section>

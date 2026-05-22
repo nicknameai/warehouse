@@ -33,11 +33,11 @@ public class UserManagementService {
         validateRoleName(roleName);
 
         if (userRepository.existsByLogin(login)) {
-            throw new ValidationException("User login must be unique.");
+            throw new ValidationException("Логин пользователя должен быть уникальным.");
         }
 
         Role role = roleRepository.findByName(roleName)
-                .orElseThrow(() -> new IllegalArgumentException("Role with this name was not found."));
+                .orElseThrow(() -> new IllegalArgumentException("Роль с таким названием не найдена."));
 
         User user = new User();
         user.setLogin(login);
@@ -58,25 +58,25 @@ public class UserManagementService {
 
     private void validateLogin(String login) {
         if (login == null || login.isBlank()) {
-            throw new ValidationException("User login must not be empty.");
+            throw new ValidationException("Логин пользователя не должен быть пустым.");
         }
     }
 
     private void validatePassword(String rawPassword) {
         if (rawPassword == null || rawPassword.isBlank()) {
-            throw new ValidationException("User password must not be empty.");
+            throw new ValidationException("Пароль пользователя не должен быть пустым.");
         }
     }
 
     private void validateName(String name) {
         if (name == null || name.isBlank()) {
-            throw new ValidationException("User name must not be empty.");
+            throw new ValidationException("Имя пользователя не должно быть пустым.");
         }
     }
 
     private void validateRoleName(String roleName) {
         if (roleName == null || roleName.isBlank()) {
-            throw new ValidationException("User role must not be empty.");
+            throw new ValidationException("Роль пользователя не должна быть пустой.");
         }
     }
 }

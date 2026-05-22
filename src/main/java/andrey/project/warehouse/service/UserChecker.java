@@ -21,7 +21,7 @@ public class UserChecker {
     public User findByLogin(String login) {
         validateLogin(login);
         return userRepository.findByLogin(login)
-                .orElseThrow(() -> new IllegalArgumentException("User with this login was not found."));
+                .orElseThrow(() -> new IllegalArgumentException("Пользователь с таким логином не найден."));
     }
 
     public boolean existsByLogin(String login) {
@@ -35,7 +35,7 @@ public class UserChecker {
         validateName(name);
 
         User user = userRepository.findByLogin(login)
-                .orElseThrow(() -> new IllegalArgumentException("User with this login was not found."));
+                .orElseThrow(() -> new IllegalArgumentException("Пользователь с таким логином не найден."));
         user.setName(name);
         return userRepository.saveAndFlush(user);
     }
@@ -46,26 +46,26 @@ public class UserChecker {
         validatePassword(rawPassword);
 
         User user = userRepository.findByLogin(login)
-                .orElseThrow(() -> new IllegalArgumentException("User with this login was not found."));
+                .orElseThrow(() -> new IllegalArgumentException("Пользователь с таким логином не найден."));
         user.setPasswordHash(passwordEncoder.encode(rawPassword));
         return userRepository.saveAndFlush(user);
     }
 
     private void validateLogin(String login) {
         if (login == null || login.isBlank()) {
-            throw new ValidationException("User login must not be empty.");
+            throw new ValidationException("Логин пользователя не должен быть пустым.");
         }
     }
 
     private void validateName(String name) {
         if (name == null || name.isBlank()) {
-            throw new ValidationException("User name must not be empty.");
+            throw new ValidationException("Имя пользователя не должно быть пустым.");
         }
     }
 
     private void validatePassword(String rawPassword) {
         if (rawPassword == null || rawPassword.isBlank()) {
-            throw new ValidationException("User password must not be empty.");
+            throw new ValidationException("Пароль пользователя не должен быть пустым.");
         }
     }
 }

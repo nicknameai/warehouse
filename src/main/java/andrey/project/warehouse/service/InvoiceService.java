@@ -56,7 +56,7 @@ public class InvoiceService {
         validateItems(command.getItems());
 
         Supplier supplier = supplierRepository.findById(command.getSupplierId())
-                .orElseThrow(() -> new IllegalArgumentException("Supplier with this id was not found."));
+                .orElseThrow(() -> new IllegalArgumentException("Поставщик с таким ID не найден."));
 
         Invoice invoice = new Invoice();
         invoice.setInvoiceDate(LocalDate.now());
@@ -77,7 +77,7 @@ public class InvoiceService {
         validateItems(command.getItems());
 
         Client client = clientRepository.findById(command.getClientId())
-                .orElseThrow(() -> new IllegalArgumentException("Client with this id was not found."));
+                .orElseThrow(() -> new IllegalArgumentException("Клиент с таким ID не найден."));
 
         validateOutgoingStock(command.getItems());
 
@@ -96,51 +96,51 @@ public class InvoiceService {
 
     public InvoiceResult findById(Integer id) {
         if (id == null) {
-            throw new ValidationException("Invoice id must not be empty.");
+            throw new ValidationException("ID накладной не должен быть пустым.");
         }
 
         Invoice invoice = invoiceRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invoice with this id was not found."));
+                .orElseThrow(() -> new IllegalArgumentException("Накладная с таким ID не найдена."));
         List<InvoiceItem> items = invoiceItemRepository.findByInvoiceId(id);
         return toResult(invoice, items);
     }
 
     private void validateIncomingCommand(CreateIncomingInvoiceCommand command) {
         if (command == null) {
-            throw new ValidationException("Incoming invoice command must not be empty.");
+            throw new ValidationException("Данные приходной накладной не должны быть пустыми.");
         }
 
         if (command.getSupplierId() == null) {
-            throw new ValidationException("Supplier id must not be empty.");
+            throw new ValidationException("ID поставщика не должен быть пустым.");
         }
     }
 
     private void validateOutgoingCommand(CreateOutgoingInvoiceCommand command) {
         if (command == null) {
-            throw new ValidationException("Outgoing invoice command must not be empty.");
+            throw new ValidationException("Данные расходной накладной не должны быть пустыми.");
         }
 
         if (command.getClientId() == null) {
-            throw new ValidationException("Client id must not be empty.");
+            throw new ValidationException("ID клиента не должен быть пустым.");
         }
     }
 
     private void validateItems(List<InvoiceItemCommand> items) {
         if (items == null || items.isEmpty()) {
-            throw new ValidationException("Invoice must contain at least one item.");
+            throw new ValidationException("Накладная должна содержать хотя бы одну позицию.");
         }
 
         for (InvoiceItemCommand item : items) {
             if (item.getProductId() == null) {
-                throw new ValidationException("Invoice item product id must not be empty.");
+                throw new ValidationException("ID товара в позиции накладной не должен быть пустым.");
             }
 
             if (item.getQuantity() == null || item.getQuantity() <= 0) {
-                throw new ValidationException("Invoice item quantity must be greater than 0.");
+                throw new ValidationException("Количество в позиции накладной должно быть больше 0.");
             }
 
             if (item.getPrice() == null || item.getPrice() < 0) {
-                throw new ValidationException("Invoice item price must be greater than or equal to 0.");
+                throw new ValidationException("Цена в позиции накладной должна быть больше или равна 0.");
             }
         }
     }
@@ -149,14 +149,14 @@ public class InvoiceService {
         for (InvoiceItemCommand itemCommand : itemCommands) {
             WarehouseStock stock = warehouseStockRepository.findByProductId(itemCommand.getProductId())
                     .orElseThrow(() -> new NotEnoughStockException(
-                            "Product with id " + itemCommand.getProductId() + " is not available in warehouse."
+                            "Товар с ID " + itemCommand.getProductId() + " отсутствует на складе."
                     ));
 
             if (stock.getQuantity() < itemCommand.getQuantity()) {
                 throw new NotEnoughStockException(
-                        "Not enough stock for product id " + itemCommand.getProductId() +
-                                ". Available: " + stock.getQuantity() +
-                                ", requested: " + itemCommand.getQuantity() + "."
+                        "Недостаточно товара с ID " + itemCommand.getProductId() +
+                                ". Доступно: " + stock.getQuantity() +
+                                ", требуется: " + itemCommand.getQuantity() + "."
                 );
             }
         }
@@ -167,7 +167,7 @@ public class InvoiceService {
 
         for (InvoiceItemCommand itemCommand : itemCommands) {
             Product product = productRepository.findById(itemCommand.getProductId())
-                    .orElseThrow(() -> new IllegalArgumentException("Product with this id was not found."));
+                    .orElseThrow(() -> new IllegalArgumentException("Товар с таким ID не найден."));
 
             InvoiceItem invoiceItem = new InvoiceItem();
             invoiceItem.setInvoice(invoice);
@@ -200,7 +200,7 @@ public class InvoiceService {
         for (InvoiceItem item : items) {
             WarehouseStock stock = warehouseStockRepository.findByProductId(item.getProduct().getId())
                     .orElseThrow(() -> new NotEnoughStockException(
-                            "Product with id " + item.getProduct().getId() + " is not available in warehouse."
+                            "Товар с ID " + item.getProduct().getId() + " отсутствует на складе."
                     ));
 
             int updatedQuantity = stock.getQuantity() - item.getQuantity();

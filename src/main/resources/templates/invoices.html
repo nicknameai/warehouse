@@ -107,7 +107,7 @@
 
                 <dl class="detail-grid">
                     <div><dt>Дата</dt><dd th:text="${invoiceDetails.invoiceDate}"></dd></div>
-                    <div><dt>Тип</dt><dd th:text="${invoiceDetails.invoiceType}"></dd></div>
+                    <div><dt>Тип</dt><dd th:text="${invoiceDetails.invoiceType == T(andrey.project.warehouse.entity.InvoiceType).INCOMING ? 'Приходная' : 'Расходная'}"></dd></div>
                     <div><dt>Контрагент</dt><dd th:text="${invoicePartyName}"></dd></div>
                     <div><dt>ID поставщика</dt><dd th:text="${invoiceDetails.supplierId != null ? invoiceDetails.supplierId : '—'}"></dd></div>
                     <div><dt>ID клиента</dt><dd th:text="${invoiceDetails.clientId != null ? invoiceDetails.clientId : '—'}"></dd></div>
